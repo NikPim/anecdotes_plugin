@@ -1,9 +1,13 @@
 import unittest
-from dummy_class import DummyAPIClient, InvalidTokenError, ServerDoesNotRespondError
+from dummy_api_client import DummyAPIClient, InvalidTokenError, ServerDoesNotRespondError
+from config import read_config
 
 class DummyAPIClientTestCase(unittest.TestCase):
     def setUp(self):
-        self.correct_token = "64b02746b7a96104a79facfa"
+        config = read_config()
+        token = config.get("API", "token")
+
+        self.correct_token = token
         self.incorrect_token = "incorrect token"
         self.correct_url = "https://dummyapi.io/data/v1/"
         self.incorrect_url = "https://dummyapi.io/data/v111"

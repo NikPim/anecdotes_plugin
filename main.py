@@ -1,11 +1,15 @@
 import logging
-from dummy_class import DummyAPIClient
+from config import read_config
+from dummy_api_client import DummyAPIClient
 from save_data import save_data_to_json
 
 
 def main():
+    config = read_config()
+    token = config.get("API", "token")
+
     service_url = "https://dummyapi.io/data/v1/"
-    access_token = "64b02746b7a96104a79facfa"
+    access_token = token
 
     # Configure logging
     logging.basicConfig(filename="errors.log", level=logging.ERROR)
@@ -26,7 +30,7 @@ def main():
 
         try:
             # Get list of posts with comments
-            posts = client.get_posts_with_comments()
+            posts = client.get_posts_with_comments(page_size=10, page_limit=5)
             save_data_to_json(posts, "posts.json")
             print("Posts data saved successfully.")
         except Exception as err:

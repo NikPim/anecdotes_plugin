@@ -66,7 +66,7 @@ class DummyAPIClient:
 
         raise APIConnectionError()
 
-    def _paginate(self, url, params=None):
+    def _paginate(self, url, params=None, page_limit = None):
         """
         Paginate through the API responses to retrieve all data.
 
@@ -78,25 +78,39 @@ class DummyAPIClient:
             list: List of data objects retrieved from paginated API responses.
         """
         all_data = []
+        page_count = 0
 
-        while url:
+        while True:
             response = requests.get(url, headers=self.headers, params=params, timeout=5)
-            data = response.json().get("data", [])
+            response_data = response.json()
+
+            data = response_data.get("data", [])
+            previous_number_of_users = len(all_data)
             all_data.extend(data)
 
-            pagination = response.json().get("pagination", {})
-            url = pagination.get("next", None)
-            params = None  # Clear the params after the first request
+            total_pages = response_data.get("total", 0)
+            current_page = response_data.get("page", 0)
+
+            if current_page >= total_pages or previous_number_of_users == len(all_data):
+                break
+
+            if params is None:
+                params = {"page": current_page + 1}
+            else:
+                params = {**params, "page": current_page + 1}
+
+            page_count += 1
+            if page_limit is not None and page_count >= page_limit:
+                break
 
         return all_data
 
-    def get_users(self, page_size=5, total_pages=2):
+    def get_users(self, page_size=10, page_limit=None):
         """
         Retrieve a list of users from the API.
 
         Args:
-            page_size (int, optional): Number of users to retrieve per page. Defaults to 50.
-            total_pages (int, optional): Maximum number of pages to retrieve. Defaults to 10.
+            page_size (int, optional): Number of users to retrieve per page
 
         Returns:
             list: List of user objects.
@@ -104,15 +118,14 @@ class DummyAPIClient:
         url = f"{self.home_url}/user"
         params = {"limit": page_size}
 
-        return self._paginate(url, params)
+        return self._paginate(url, params, page_limit)
 
-    def get_posts_with_comments(self, page_size=5, total_pages=2):
+    def get_posts_with_comments(self, page_size=10, page_limit=None):
         """
         Retrieve a list of posts with comments from the API.
 
         Args:
             page_size (int, optional): Number of posts to retrieve per page. Defaults to 50.
-            total_pages (int, optional): Maximum number of pages to retrieve. Defaults to 1.
 
         Returns:
             list: List of post objects with comments.
@@ -120,10 +133,10 @@ class DummyAPIClient:
         url = f"{self.home_url}/post"
         params = {"limit": page_size}
 
-        all_posts = self._paginate(url, params)
+        all_posts = self._paginate(url, params, page_limit)
 
         for post in all_posts:
             comments_url = f"{url}/{post['id']}/comment"
-            post["comments"] = self._paginate(comments_url)
+            post["comments"] = self._paginate(comments_url, params)
 
         return all_posts
