@@ -6,10 +6,10 @@ from save_data import save_data_to_json
 
 def main():
     config = read_config()
-    token = config.get("API", "token")
+    get_token = config.get("API", "token")
 
     service_url = "https://dummyapi.io/data/v1/"
-    access_token = token
+    access_token = get_token
 
     # Configure logging
     logging.basicConfig(filename="errors.log", level=logging.ERROR)

@@ -2,3 +2,4 @@ __pycache__/
 venv/
 configuration.ini
 *.json
+errors.log
