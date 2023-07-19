@@ -1,45 +1,11 @@
 import requests
+from base_api_client import BaseAPIClient
+import error_classes as error
 
-class InvalidTokenError(ValueError):
-    """
-    Error raised when an invalid token is provided.
-    """
-    def __init__(self, message="Invalid token provided"):
-        super().__init__(message)
-
-class MissingTokenError(ValueError):
-    """
-    Error raised when no token is provided.
-    """
-    def __init__(self, message="No token provided"):
-        super().__init__(message)
-
-class ServerDoesNotRespondError(ValueError):
-    """
-    Error raised when a server does not respond.
-    """
-    def __init__(self, message="Server does not respond"):
-        super().__init__(message)
-
-class APIConnectionError(Exception):
-    """
-    Error raised when there is a failure in the API connection.
-    """
-    def __init__(self, message="Failed to connect to the API"):
-        super().__init__(message)
-
-
-class DummyAPIClient:
+class DummyAPIClient(BaseAPIClient):
     """
     Client for interacting with the API provided by dummyapi.io service.
     """
-    def __init__(self, url, access_token):
-        self.home_url = url
-        self.headers = {"app-id": access_token}
-
-        # Check connectivity during class construction
-        self.check_connection()
-
     def check_connection(self):
         """
         Check the connection to the API.
@@ -50,21 +16,21 @@ class DummyAPIClient:
             Exception: If there is a failure to connect to the API.
         """
         url = f"{self.home_url}/user"
-        response = requests.get(url, headers=self.headers, timeout=5)
+        response = requests.get(url, headers=self.header, timeout=5)
         if response.status_code == 200:
             return
 
         if response.status_code == 403:
             error_data = response.json().get("error", {})
             if error_data == "APP_ID_NOT_EXIST":
-                raise InvalidTokenError()
+                raise error.InvalidTokenError()
             if error_data == "APP_ID_MISSING":
-                raise MissingTokenError()
+                raise error.MissingTokenError()
 
         if response.status_code == 404:
-            raise ServerDoesNotRespondError()
+            raise error.ServerDoesNotRespondError()
 
-        raise APIConnectionError()
+        raise error.APIConnectionError()
 
     def _paginate(self, url, params=None, page_limit = None):
         """
@@ -81,7 +47,7 @@ class DummyAPIClient:
         page_count = 0
 
         while True:
-            response = requests.get(url, headers=self.headers, params=params, timeout=5)
+            response = requests.get(url, headers=self.header, params=params, timeout=5)
             response_data = response.json()
 
             data = response_data.get("data", [])

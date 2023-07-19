@@ -1,5 +1,5 @@
 __pycache__/
 venv/
-configuration.ini
+config.ini
 *.json
 errors.log

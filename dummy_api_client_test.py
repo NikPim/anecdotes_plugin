@@ -1,17 +1,20 @@
 import unittest
-from dummy_api_client import DummyAPIClient, InvalidTokenError, ServerDoesNotRespondError
-from config import read_config
+from dummy_api_client import DummyAPIClient
+import error_classes as error
+from read_config import read_config
 
 class DummyAPIClientTestCase(unittest.TestCase):
     def setUp(self):
         config = read_config()
-        token = config.get("API", "token")
+        token = config.get("Dummy", "token")
+        header_name = config.get("Dummy", "header_name")
+        self.header = {header_name:token}
 
         self.correct_token = token
         self.incorrect_token = "incorrect token"
         self.correct_url = "https://dummyapi.io/data/v1/"
         self.incorrect_url = "https://dummyapi.io/data/v111"
-        self.client = DummyAPIClient(self.correct_url, self.correct_token)
+        self.client = DummyAPIClient(self.correct_url, self.header)
 
     def test_check_connection_with_correct_url(self):
         """
@@ -24,7 +27,7 @@ class DummyAPIClientTestCase(unittest.TestCase):
         Test to ensure that connection raises ServerDoesNotRespondError with incorrect URL
         """
         self.client.home_url = self.incorrect_url
-        with self.assertRaises(ServerDoesNotRespondError) as cm:
+        with self.assertRaises(error.ServerDoesNotRespondError) as cm:
             self.client.check_connection()
 
         self.assertEqual(str(cm.exception), "Server does not respond")
@@ -39,8 +42,8 @@ class DummyAPIClientTestCase(unittest.TestCase):
         """
         Test to ensure that connection raises InvalidTokenError with incorrect token
         """
-        self.client.headers["app-id"] = self.incorrect_token
-        with self.assertRaises(InvalidTokenError):
+        self.client.header["app-id"] = self.incorrect_token
+        with self.assertRaises(error.InvalidTokenError):
             self.client.check_connection()
 
 if __name__ == "__main__":
