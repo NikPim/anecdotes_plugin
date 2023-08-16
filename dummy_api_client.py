@@ -1,19 +1,23 @@
+# -*- coding: utf-8 -*-
 import requests
 from base_api_client import BaseAPIClient
 import error_classes as error
+
 
 class DummyAPIClient(BaseAPIClient):
     """
     Client for interacting with the API provided by dummyapi.io service.
     """
+
     def check_connection(self):
         """
-        Check the connection to the API.
+                Check the connection to the API.
 
-        Raises:
-            ValueError: If an invalid token is provided.
-            ValueError: If no token is provided.
-            Exception: If there is a failure to connect to the API.
+                Raises:
+                    ValueError: If an invalid token is provided.
+                    ValueError: If no token is provided.
+                    Exception: If there is a failure to cpip install pre-commit
+        onnect to the API.
         """
         url = f"{self.home_url}/user"
         response = requests.get(url, headers=self.header, timeout=5)
@@ -32,13 +36,14 @@ class DummyAPIClient(BaseAPIClient):
 
         raise error.APIConnectionError()
 
-    def _paginate(self, url, params=None, page_limit = None):
+    def _paginate(self, url, params=None, page_limit=None):
         """
         Paginate through the API responses to retrieve all data.
 
         Args:
             url (str): The base URL for the API endpoint.
-            params (dict, optional): Additional query parameters. Defaults to None.
+            params (dict, optional): Additional query parameters.
+            Defaults to None.
 
         Returns:
             list: List of data objects retrieved from paginated API responses.
@@ -91,7 +96,8 @@ class DummyAPIClient(BaseAPIClient):
         Retrieve a list of posts with comments from the API.
 
         Args:
-            page_size (int, optional): Number of posts to retrieve per page. Defaults to 50.
+            page_size (int, optional): Number of posts to retrieve per page.
+            Defaults to 50.
 
         Returns:
             list: List of post objects with comments.

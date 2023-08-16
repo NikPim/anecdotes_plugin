@@ -1,4 +1,6 @@
+# -*- coding: utf-8 -*-
 import configparser
+
 
 def read_config() -> configparser.ConfigParser:
     """
