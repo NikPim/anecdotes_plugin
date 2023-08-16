@@ -1,16 +1,18 @@
+# -*- coding: utf-8 -*-
 import logging
 from save_data import save_data_to_json
-from base_api_client import BaseAPIClient
+from client_factory import APIClientFactory
+
 
 def main():
     # Configure logging
     logging.basicConfig(filename="errors.log", level=logging.ERROR)
 
     try:
-        #Create client instance and check the connection to the API
+        # Create client instance and check the connection to the API
         api_provider = "Dummy"
-        client = BaseAPIClient.create_instance(api_provider)
-        print(f"Connection to the {api_provider} API established successfully.")
+        client = APIClientFactory.create_client(api_provider)
+        print(f"Connection to {api_provider} API established successfully")
 
         try:
             # Get list of users
@@ -33,6 +35,7 @@ def main():
     except Exception as err:
         logging.exception(f"Error connecting to the {api_provider} API")
         print(f"Error connecting to the {api_provider} API:", str(err))
+
 
 if __name__ == "__main__":
     main()
