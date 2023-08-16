@@ -12,7 +12,7 @@ def main():
         # Create client instance and check the connection to the API
         api_provider = "Dummy"
         client = APIClientFactory.create_client(api_provider)
-        print(f"Connection to {api_provider} API established successfully")
+        print(f"Connection to the {api_provider} API established successfully")
 
         try:
             # Get list of users
