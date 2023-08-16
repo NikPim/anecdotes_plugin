@@ -1,0 +1,36 @@
+
+repos:
+# Standard hooks
+- repo: https://github.com/pre-commit/pre-commit-hooks
+  rev: v3.4.0
+  hooks:
+  - id: check-added-large-files
+  - id: check-case-conflict
+  - id: check-merge-conflict
+  - id: check-symlinks
+  - id: check-yaml
+  - id: debug-statements
+  - id: end-of-file-fixer
+  - id: mixed-line-ending
+  - id: requirements-txt-fixer
+  - id: trailing-whitespace
+  - id: fix-encoding-pragma
+# Black, the code formatter, natively supports pre-commit
+- repo: https://github.com/psf/black
+  rev: 22.3.0
+  hooks:
+  - id: black
+    # By default, this ignores pyi files, though black supports them
+    types: [text]
+    files: \.pyi?$
+# Changes tabs to spaces
+- repo: https://github.com/Lucas-C/pre-commit-hooks
+  rev: v1.1.9
+  hooks:
+  - id: remove-tabs
+# Flake8 also supports pre-commit natively (same author)
+- repo: https://github.com/pycqa/flake8.git
+  rev: 3.9.2
+  hooks:
+  - id: flake8
+    exclude: 'tests|env|docs'
