@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 import unittest
-from dummy_api_client import DummyAPIClient
-import error_classes as error
-from read_config import read_config
+from src.dummy_api_client import DummyAPIClient
+import src.error_classes as error
+from config.read_config import read_config
 
 
 class DummyAPIClientTestCase(unittest.TestCase):
