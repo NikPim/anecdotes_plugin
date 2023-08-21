@@ -5,8 +5,27 @@ from base_api_client import BaseAPIClient
 
 
 class APIClientFactory:
+    """
+    Factory class for creating API client instances based on the specified API provider.
+    """
+
     @staticmethod
     def create_client(api_provider: str) -> BaseAPIClient:
+        """
+        Create and return an instance of the appropriate API client.
+
+        Args:
+            api_provider (str): The name of the API provider
+            for which to create the client.
+
+        Returns:
+            BaseAPIClient: An instance of the API client
+            corresponding to the given provider.
+
+        Raises:
+            error.UnknownApiProviderError: If the specified
+            API provider is not recognized.
+        """
         config = read_config()
 
         url = config.get(api_provider, "base_url")
