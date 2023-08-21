@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 import os
 import json
+from typing import Dict, Any
 
 
-def save_data_to_json(data, filename):
+def save_data_to_json(data: Dict[str, Any], filename: str) -> None:
     """
     Saves data to a local JSON file with provided filename
 

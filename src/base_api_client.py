@@ -7,7 +7,7 @@ class BaseAPIClient(ABC):
     Client for interacting with the API provided by dummyapi.io service.
     """
 
-    def __init__(self, url, auth_header):
+    def __init__(self, url: str, auth_header: dict) -> None:
         self.home_url = url
         self.header = auth_header
 

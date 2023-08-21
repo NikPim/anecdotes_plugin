@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from typing import List, Dict, Any
 import requests
 from base_api_client import BaseAPIClient
 import error_classes as error
@@ -9,14 +10,14 @@ class DummyAPIClient(BaseAPIClient):
     Client for interacting with the API provided by dummyapi.io service.
     """
 
-    def check_connection(self):
+    def check_connection(self) -> None:
         """
-                Check the connection to the API.
+        Check the connection to the API.
 
-                Raises:
-                    ValueError: If an invalid token is provided.
-                    ValueError: If no token is provided.
-                    Exception: If there is a failure to cpip install pre-commit
+        Raises:
+            ValueError: If an invalid token is provided.
+            ValueError: If no token is provided.
+            Exception: If there is a failure to cpip install pre-commit
         onnect to the API.
         """
         url = f"{self.home_url}/user"
@@ -36,7 +37,9 @@ class DummyAPIClient(BaseAPIClient):
 
         raise error.APIConnectionError()
 
-    def _paginate(self, url, params=None, page_limit=None):
+    def _paginate(
+        self, url: str, params: dict = None, page_limit: int = None
+    ) -> List[Dict[str, Any]]:
         """
         Paginate through the API responses to retrieve all data.
 
@@ -76,7 +79,9 @@ class DummyAPIClient(BaseAPIClient):
 
         return all_data
 
-    def get_users(self, page_size=10, page_limit=None):
+    def get_users(
+        self, page_size: int = 10, page_limit: int = None
+    ) -> List[Dict[str, Any]]:
         """
         Retrieve a list of users from the API.
 
@@ -91,7 +96,9 @@ class DummyAPIClient(BaseAPIClient):
 
         return self._paginate(url, params, page_limit)
 
-    def get_posts_with_comments(self, page_size=10, page_limit=None):
+    def get_posts_with_comments(
+        self, page_size: int = 10, page_limit: int = None
+    ) -> List[Dict[str, Any]]:
         """
         Retrieve a list of posts with comments from the API.
 
