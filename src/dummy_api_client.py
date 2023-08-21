@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 from typing import List, Dict, Any
-import requests
+import requests  # type: ignore
 from base_api_client import BaseAPIClient
 import error_classes as error
 
 
-class DummyAPIClient(BaseAPIClient):
+class DummyAPIClient(BaseAPIClient):  # type: ignore
     """
     Client for interacting with the API provided by dummyapi.io service.
     """
@@ -38,7 +38,7 @@ class DummyAPIClient(BaseAPIClient):
         raise error.APIConnectionError()
 
     def _paginate(
-        self, url: str, params: dict = None, page_limit: int = None
+        self, url: str, params: dict[str, int] | None, page_limit: int = 10
     ) -> List[Dict[str, Any]]:
         """
         Paginate through the API responses to retrieve all data.
@@ -51,7 +51,7 @@ class DummyAPIClient(BaseAPIClient):
         Returns:
             list: List of data objects retrieved from paginated API responses.
         """
-        all_data = []
+        all_data: List[Any] = []
         page_count = 0
 
         while True:
@@ -80,7 +80,7 @@ class DummyAPIClient(BaseAPIClient):
         return all_data
 
     def get_users(
-        self, page_size: list = 10, page_limit: int = None
+        self, page_size: int = 10, page_limit: int = 10
     ) -> List[Dict[str, Any]]:
         """
         Retrieve a list of users from the API.
@@ -97,7 +97,7 @@ class DummyAPIClient(BaseAPIClient):
         return self._paginate(url, params, page_limit)
 
     def get_posts_with_comments(
-        self, page_size: int = 10, page_limit: int = None
+        self, page_size: int = 10, page_limit: int = 10
     ) -> List[Dict[str, Any]]:
         """
         Retrieve a list of posts with comments from the API.
