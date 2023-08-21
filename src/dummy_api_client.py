@@ -5,7 +5,7 @@ from base_api_client import BaseAPIClient
 import error_classes as error
 
 
-class DummyAPIClient(BaseAPIClient):  # type: ignore
+class DummyAPIClient(BaseAPIClient):
     """
     Client for interacting with the API provided by dummyapi.io service.
     """
