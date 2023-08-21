@@ -66,3 +66,7 @@ repos:
     types:
     - c++
     entry: ./tools/check-style.sh
+-   repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v0.910
+    hooks:
+    -   id: mypy
