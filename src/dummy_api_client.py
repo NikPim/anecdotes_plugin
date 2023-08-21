@@ -80,7 +80,7 @@ class DummyAPIClient(BaseAPIClient):
         return all_data
 
     def get_users(
-        self, page_size: int = 10, page_limit: int = None
+        self, page_size: list = 10, page_limit: int = None
     ) -> List[Dict[str, Any]]:
         """
         Retrieve a list of users from the API.
