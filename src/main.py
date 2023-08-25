@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import logging
-from save_data import save_data_to_json
+from saving_data import JsonFileSaver
 from client_factory import APIClientFactory
 import error_classes as error
 
@@ -15,14 +15,16 @@ def main() -> None:
         client = APIClientFactory.create_client(api_provider)
         print(f"Connection to the {api_provider} API established successfully")
 
+        json_saver = JsonFileSaver()
+
         # Get list of users
         users = client.get_users()
-        save_data_to_json(users, "users.json")
+        json_saver.save(users, "users.json")
         print("Users data saved successfully.")
 
         # Get list of posts with comments
         posts = client.get_posts_with_comments(page_size=10, page_limit=5)
-        save_data_to_json(posts, "posts.json")
+        json_saver.save(posts, "posts.json")
         print("Posts data saved successfully.")
 
     except error.UnknownApiProviderError as prov_err:
