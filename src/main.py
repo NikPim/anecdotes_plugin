@@ -2,9 +2,10 @@
 import logging
 from save_data import save_data_to_json
 from client_factory import APIClientFactory
+import error_classes as error
 
 
-def main():
+def main() -> None:
     # Configure logging
     logging.basicConfig(filename="errors.log", level=logging.ERROR)
 
@@ -14,27 +15,28 @@ def main():
         client = APIClientFactory.create_client(api_provider)
         print(f"Connection to the {api_provider} API established successfully")
 
-        try:
-            # Get list of users
-            users = client.get_users()
-            save_data_to_json(users, "users.json")
-            print("Users data saved successfully.")
-        except Exception as err:
-            logging.exception(f"Error fetching users from {api_provider}")
-            print(f"Error fetching users from {api_provider}:", str(err))
+        # Get list of users
+        users = client.get_users()
+        save_data_to_json(users, "users.json")
+        print("Users data saved successfully.")
 
-        try:
-            # Get list of posts with comments
-            posts = client.get_posts_with_comments(page_size=10, page_limit=5)
-            save_data_to_json(posts, "posts.json")
-            print("Posts data saved successfully.")
-        except Exception as err:
-            logging.exception(f"Error fetching posts from {api_provider}")
-            print(f"Error fetching posts from {api_provider}:", str(err))
+        # Get list of posts with comments
+        posts = client.get_posts_with_comments(page_size=10, page_limit=5)
+        save_data_to_json(posts, "posts.json")
+        print("Posts data saved successfully.")
 
-    except Exception as err:
-        logging.exception(f"Error connecting to the {api_provider} API")
-        print(f"Error connecting to the {api_provider} API:", str(err))
+    except error.UnknownApiProviderError as prov_err:
+        logging.exception("Error connecting to the %s API", api_provider)
+        print(f"Error connecting to the {api_provider} API:", str(prov_err))
+    except error.InvalidTokenError as inv_token_err:
+        logging.exception("Error connecting to the %s API", api_provider)
+        print(f"Error connecting to the {api_provider} API:", str(inv_token_err))
+    except error.MissingTokenError as miss_token_err:
+        logging.exception("Error connecting to the %s API", api_provider)
+        print(f"Error connecting to the {api_provider} API:", str(miss_token_err))
+    except error.ServerDoesNotRespondError as resp_err:
+        logging.exception("Error connecting to the %s API", api_provider)
+        print(f"Error connecting to the {api_provider} API:", str(resp_err))
 
 
 if __name__ == "__main__":
