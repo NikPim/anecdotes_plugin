@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import error_classes as error
-from read_config import read_config
+from config.read_config import read_config
 from base_api_client import BaseAPIClient
 
 

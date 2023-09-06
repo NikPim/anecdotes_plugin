@@ -2,7 +2,7 @@
 import unittest
 from src.dummy_api_client import DummyAPIClient
 import src.error_classes as error
-from config.read_config import read_config
+from src.read_config import read_config
 
 
 class DummyAPIClientTestCase(unittest.TestCase):

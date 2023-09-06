@@ -27,18 +27,14 @@ def main() -> None:
         json_saver.save(posts, "posts.json")
         print("Posts data saved successfully.")
 
-    except error.UnknownApiProviderError as prov_err:
+    except (
+        error.UnknownApiProviderError,
+        error.InvalidTokenError,
+        error.MissingTokenError,
+        error.ServerDoesNotRespondError,
+    ) as err:
         logging.exception("Error connecting to the %s API", api_provider)
-        print(f"Error connecting to the {api_provider} API:", str(prov_err))
-    except error.InvalidTokenError as inv_token_err:
-        logging.exception("Error connecting to the %s API", api_provider)
-        print(f"Error connecting to the {api_provider} API:", str(inv_token_err))
-    except error.MissingTokenError as miss_token_err:
-        logging.exception("Error connecting to the %s API", api_provider)
-        print(f"Error connecting to the {api_provider} API:", str(miss_token_err))
-    except error.ServerDoesNotRespondError as resp_err:
-        logging.exception("Error connecting to the %s API", api_provider)
-        print(f"Error connecting to the {api_provider} API:", str(resp_err))
+        print(f"Error connecting to the {api_provider} API:", str(err))
 
 
 if __name__ == "__main__":
