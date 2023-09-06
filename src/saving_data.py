@@ -7,7 +7,7 @@ from typing import Dict, Any
 
 class FileSaver(ABC):
     @abstractmethod
-    def save(self, data: Dict[str, Any], filename: str) -> None:
+    def save(self, data: list[Dict[str, Any]], filename: str) -> None:
         pass
 
 
@@ -16,7 +16,7 @@ class JsonFileSaver(FileSaver):
     Used for saving data in JSON format
     """
 
-    def save(self, data: Dict[str, Any], filename: str) -> None:
+    def save(self, data: list[Dict[str, Any]], filename: str) -> None:
         """
         Saves data to a local JSON file with provided filename
 

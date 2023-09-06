@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 import logging
-from saving_data import JsonFileSaver
-from client_factory import APIClientFactory
-import error_classes as error
+from src.saving_data import JsonFileSaver
+from src.client_factory import APIClientFactory
+import src.error_classes as error
 
 
 def main() -> None:
     # Configure logging
-    logging.basicConfig(filename="errors.log", level=logging.ERROR)
+    logging.basicConfig(filename="logs/errors.log", level=logging.ERROR)
 
     try:
         # Create client instance and check the connection to the API
@@ -23,7 +23,7 @@ def main() -> None:
         print("Users data saved successfully.")
 
         # Get list of posts with comments
-        posts = client.get_posts_with_comments(page_size=10, page_limit=5)
+        posts = client.get_posts_with_comments()
         json_saver.save(posts, "posts.json")
         print("Posts data saved successfully.")
 

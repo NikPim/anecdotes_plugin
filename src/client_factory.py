@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
-import error_classes as error
+import src.error_classes as error
 from config.read_config import read_config
-from base_api_client import BaseAPIClient
+from src.base_api_client import BaseAPIClient
+from src.dummy_api_client import DummyAPIClient
 
 
 class APIClientFactory:
@@ -33,8 +34,6 @@ class APIClientFactory:
         token = config.get(api_provider, "token")
 
         if api_provider == "Dummy":
-            from dummy_api_client import DummyAPIClient
-
             header = {header_name: token}
             return DummyAPIClient(url, header)
 

@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 from typing import List, Dict, Any
 import requests  # type: ignore
-from base_api_client import BaseAPIClient
-import error_classes as error
+from src.base_api_client import BaseAPIClient
+import src.error_classes as error
 
 
 class DummyAPIClient(BaseAPIClient):
@@ -97,7 +97,7 @@ class DummyAPIClient(BaseAPIClient):
         return self._paginate(url, params, page_limit)
 
     def get_posts_with_comments(
-        self, page_size: int = 10, page_limit: int = 10
+        self, page_size: int = 10, page_limit: int = 5
     ) -> List[Dict[str, Any]]:
         """
         Retrieve a list of posts with comments from the API.
