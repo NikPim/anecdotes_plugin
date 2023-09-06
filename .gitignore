@@ -5,5 +5,4 @@ errors.log
 feedback.txt
 data/
 logs/
-**/__init__.py
 .pylintrc
