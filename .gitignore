@@ -4,7 +4,6 @@ venv/
 errors.log
 feedback.txt
 data/
-logs/
 .pylintrc
 .mypy_cache/
 .vscode/

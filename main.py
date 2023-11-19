@@ -7,7 +7,7 @@ import src.error_classes as error
 
 def main() -> None:
     # Configure logging
-    logging.basicConfig(filename="logs/errors.log", level=logging.ERROR)
+    logging.basicConfig(filename="./logs/errors.log", level=logging.ERROR)
 
     try:
         # Create client instance and check the connection to the API

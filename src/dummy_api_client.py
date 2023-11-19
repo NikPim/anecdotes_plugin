@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from typing import List, Dict, Any
+from typing import List, Dict, Any, Generator
 import requests  # type: ignore
 from src.base_api_client import BaseAPIClient
 import src.error_classes as error
@@ -39,7 +39,7 @@ class DummyAPIClient(BaseAPIClient):
 
     def _paginate(
         self, url: str, params: dict[str, int] | None, page_limit: int = 10
-    ) -> List[Dict[str, Any]]:
+    ) -> Generator[Dict[str, Any], None, None]:
         """
         Paginate through the API responses to retrieve all data.
 
@@ -53,19 +53,24 @@ class DummyAPIClient(BaseAPIClient):
         """
         all_data: List[Any] = []
         page_count = 0
+        num_of_records = 0
 
         while True:
             response = requests.get(url, headers=self.header, params=params, timeout=5)
             response_data = response.json()
 
             data = response_data.get("data", [])
-            previous_number_of_users = len(all_data)
-            all_data.extend(data)
-
+            previous_number_of_users = num_of_records
+            num_of_records += len(data)
             total_pages = response_data.get("total", 0)
             current_page = response_data.get("page", 0)
+            for item in data:
+                yield item
 
-            if current_page >= total_pages or previous_number_of_users == len(all_data):
+            if (
+                current_page >= total_pages
+                or previous_number_of_users == num_of_records
+            ):
                 break
 
             if params is None:
